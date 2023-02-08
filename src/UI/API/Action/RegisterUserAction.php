@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\API\Action;
 
+use App\Application\Register\RegisterUserCommand;
 use Assert\Assert;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,11 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RegisterUserAction extends AbstractAction
 {
+    private const EMAIL = 'email';
+    private const PASSWORD = 'password';
+    private const FIRST_NAME = 'firstName';
+    private const LAST_NAME = 'lastName';
+
     public function __construct(private readonly MessageBusInterface $commandBus){}
 
     public function __invoke(Request $request): Response
@@ -19,15 +25,21 @@ final class RegisterUserAction extends AbstractAction
         $data = $request->toArray();
 
         Assert::lazy()
-            ->that()
-            ->that()
-            ->that()
-            ->that()
-            ->that()
+            ->that($data[self::EMAIL] ?? null, self::EMAIL)->notEmpty('Email is required')->email('Given value is not valid email')
+            ->that($data[self::PASSWORD] ?? null, self::PASSWORD)->notEmpty('Password is required')->minLength(8, 'Password length must be at least 8 characters')
+            ->that($data[self::FIRST_NAME] ?? null, self::FIRST_NAME)->notEmpty('First name is  required')
+            ->that($data[self::LAST_NAME] ?? null, self::LAST_NAME)->notEmpty('Last name is required')
             ->verifyNow();
 
-        return new JsonResponse([
-            'id' => '',
-        ]);
+        $command = new RegisterUserCommand(
+            $data[self::EMAIL],
+            $data[self::PASSWORD],
+            $data[self::FIRST_NAME],
+            $data[self::LAST_NAME],
+        );
+
+        $this->commandBus->dispatch($command);
+
+        return new JsonResponse(status: Response::HTTP_CREATED);
     }
 }
