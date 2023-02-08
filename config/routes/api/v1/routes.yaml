@@ -1,0 +1,4 @@
+authentication.register:
+  path: /auth/register
+  controller: App\UI\API\Action\RegisterUserAction
+  methods: [POST]

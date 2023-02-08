@@ -1,0 +1,19 @@
+framework:
+    messenger:
+        default_bus: command.bus
+        buses:
+            query.bus: ~
+
+            command.bus:
+                middleware:
+                    - validation
+                    - 'App\SharedKernel\Messenger\Middleware\DatabaseTransactionMiddleware'
+                    - 'App\SharedKernel\Messenger\Middleware\DomainEventDispatcherMiddleware'
+
+            event.bus:
+                default_middleware: allow_no_handlers
+                middleware:
+                    - 'App\SharedKernel\Messenger\Middleware\DomainEventDispatcherMiddleware'
+
+        transports:
+        routing:
