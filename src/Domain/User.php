@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
+use App\Domain\Event\EmailConfirmed;
 use App\Domain\Event\UserWasRegister;
+use App\Domain\Exception\EmailAlreadyConfirmedException;
 use App\SharedKernel\Entity;
 
 final class User extends Entity
@@ -47,6 +49,26 @@ final class User extends Entity
         );
 
         return $user;
+    }
+
+    /**
+     * @throws EmailAlreadyConfirmedException
+     */
+    public function confirmEmail(): void
+    {
+        if ($this->status !== Status::EMAIL_VERIFICATION) {
+            throw EmailAlreadyConfirmedException::create();
+        }
+
+        $this->status = Status::ACTIVE;
+
+        $this->publishDomainEvent(
+            new EmailConfirmed(
+                $this->email,
+                $this->firstName,
+                $this->lastName,
+            )
+        );
     }
 
     public function getId(): UserId

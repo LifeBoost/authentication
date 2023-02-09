@@ -2,3 +2,8 @@ authentication.register:
   path: /auth/register
   controller: App\UI\API\Action\RegisterUserAction
   methods: [POST]
+
+authentication.confirm_email:
+  path: /auth/confirm/{token}
+  controller: App\UI\API\Action\ConfirmEmailAction
+  methods: [GET]
