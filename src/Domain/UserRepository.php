@@ -18,4 +18,6 @@ interface UserRepository
      * @throws NotFoundException
      */
     public function getByConfirmationToken(ConfirmationToken $token): User;
+
+    public function getByEmail(string $email): User;
 }
