@@ -7,3 +7,8 @@ authentication.confirm_email:
   path: /auth/confirm/{token}
   controller: App\UI\API\Action\ConfirmEmailAction
   methods: [GET]
+
+authentication.generate_login_token:
+  path: /auth/sign-in/token
+  controller: App\UI\API\Action\SignInByEmailPasswordAction
+  methods: [POST]
