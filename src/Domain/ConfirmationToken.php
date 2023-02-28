@@ -6,9 +6,9 @@ namespace App\Domain;
 
 use Ramsey\Uuid\Uuid;
 
-final readonly class ConfirmationToken
+final class ConfirmationToken
 {
-    public function __construct(public string $token){}
+    public function __construct(public readonly string $token){}
 
     public static function generate(): self
     {

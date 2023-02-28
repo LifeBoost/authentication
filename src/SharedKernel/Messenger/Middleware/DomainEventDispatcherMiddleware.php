@@ -10,9 +10,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 
-final readonly class DomainEventDispatcherMiddleware implements MiddlewareInterface
+final class DomainEventDispatcherMiddleware implements MiddlewareInterface
 {
-    public function __construct(private MessageBusInterface $eventBus){}
+    public function __construct(private readonly MessageBusInterface $eventBus){}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

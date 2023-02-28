@@ -6,13 +6,13 @@ namespace App\Domain\Event;
 
 use App\SharedKernel\Event\DomainEvent;
 
-final readonly class UserWasRegister implements DomainEvent
+final class UserWasRegister implements DomainEvent
 {
     public function __construct(
-        public string $id,
-        public string $email,
-        public string $firstName,
-        public string $lastName,
-        public string $confirmationToken,
+        public readonly string $id,
+        public readonly string $email,
+        public readonly string $firstName,
+        public readonly string $lastName,
+        public readonly string $confirmationToken,
     ){}
 }

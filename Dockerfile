@@ -26,6 +26,7 @@ RUN apk add --no-cache --virtual .build-deps \
         icu-dev \
         linux-headers \
     && docker-php-ext-install -j$(nproc) \
+        bcmath \
         intl \
         opcache \
         pdo_mysql \

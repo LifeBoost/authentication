@@ -1,4 +1,9 @@
 parameters:
+    amqp.host: '%env(resolve:AMQP_HOST)%'
+    amqp.port: '%env(resolve:AMQP_PORT)%'
+    amqp.user: '%env(resolve:AMQP_USER)%'
+    amqp.password: '%env(resolve:AMQP_PASSWORD)%'
+    amqp.vhost: '%env(resolve:AMQP_VHOST)%'
 
 services:
     _defaults:
@@ -26,3 +31,20 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    amqp_factory:
+        class: App\SharedKernel\Event\AMQP\RabbitMQFactory
+        arguments:
+            $configurations: '%amqp_clients%'
+
+    App\Infrastructure\Event\Handler\UserWasRegisteredEventHandler:
+        arguments:
+            $publisher: '@=service("amqp_factory").getPublisher("user_was_registered")'
+
+    PhpAmqpLib\Connection\AMQPConnection:
+        arguments:
+            $host: '%amqp.host%'
+            $port: '%amqp.port%'
+            $user: '%amqp.user%'
+            $password: '%amqp.password%'
+            $vhost: '%amqp.vhost%'
