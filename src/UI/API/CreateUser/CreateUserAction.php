@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\UI\API\Action;
+namespace App\UI\API\CreateUser;
 
 use App\Application\Register\RegisterUserCommand;
+use App\UI\API\AbstractAction;
 use Assert\Assert;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class RegisterUserAction extends AbstractAction
+final class CreateUserAction extends AbstractAction
 {
     private const EMAIL = 'email';
     private const PASSWORD = 'password';

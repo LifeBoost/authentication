@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\SharedKernel\Event\AMQP;
 
-use PhpAmqpLib\Connection\AMQPConnection;
+use PhpAmqpLib\Connection\AbstractConnection;
 
 final class RabbitMQFactory
 {
@@ -12,7 +12,7 @@ final class RabbitMQFactory
 
     public function __construct(
         private readonly array $configurations,
-        private readonly AMQPConnection $connection,
+        private readonly AbstractConnection $connection,
     ){}
 
     public function getPublisher(string $name): Publisher

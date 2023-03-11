@@ -1,14 +1,14 @@
-authentication.register:
-  path: /auth/register
-  controller: App\UI\API\Action\RegisterUserAction
+authentication.user.create:
+  path: /auth/user
+  controller: App\UI\API\CreateUser\CreateUserAction
   methods: [POST]
 
-authentication.confirm_email:
-  path: /auth/confirm/{token}
-  controller: App\UI\API\Action\ConfirmEmailAction
+authentication.user.confirm_email:
+  path: /auth/user/confirm/{token}
+  controller: App\UI\API\ConfirmEmail\ConfirmEmailAction
   methods: [GET]
 
-authentication.generate_login_token:
-  path: /auth/sign-in/token
-  controller: App\UI\API\Action\SignInByEmailPasswordAction
+authentication.user.generate_token:
+  path: /auth/user/token
+  controller: App\UI\API\GenerateToken\GenerateAccessTokenAction
   methods: [POST]

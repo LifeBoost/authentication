@@ -5,11 +5,14 @@ parameters:
     amqp.password: '%env(resolve:AMQP_PASSWORD)%'
     amqp.vhost: '%env(resolve:AMQP_VHOST)%'
 
+    access_token.secret_key: '%env(resolve:JWT_ACCESS_TOKEN_SECRET_KEY)%'
+    access_token.algorithm: '%env(resolve:JWT_ACCESS_TOKEN_ALGORITHM)%'
+
+    refresh_token.secret_key: '%env(resolve:JWT_REFRESH_TOKEN_SECRET_KEY)%'
+    refresh_token.algorithm: '%env(resolve:JWT_REFRESH_TOKEN_ALGORITHM)%'
+
 services:
     _defaults:
-        bind:
-            $jwtSecretKey: '%env(resolve:JWT_SECRET_KEY)%'
-            $jwtAlgorithm: '%env(resolve:JWT_ALGORITHM)%'
         autowire: true
         autoconfigure: true
     _instanceof:
@@ -36,15 +39,35 @@ services:
         class: App\SharedKernel\Event\AMQP\RabbitMQFactory
         arguments:
             $configurations: '%amqp_clients%'
+            $connection: '@amqp_connection'
+
+    PhpAmqpLib\Connection\AMQPConnectionFactory: ~
+
+    amqp_connection:
+        class: PhpAmqpLib\Connection\AbstractConnection
+        factory: ['@PhpAmqpLib\Connection\AMQPConnectionFactory', 'create']
+        arguments: ['@PhpAmqpLib\Connection\AMQPConnectionConfig']
 
     App\Infrastructure\Event\Handler\UserWasRegisteredEventHandler:
         arguments:
             $publisher: '@=service("amqp_factory").getPublisher("user_was_registered")'
 
-    PhpAmqpLib\Connection\AMQPConnection:
+    PhpAmqpLib\Connection\AMQPConnectionConfig:
+        calls:
+            - setIsLazy: [true]
+            - setIoType: ['socket']
+            - setHost: ['%amqp.host%']
+            - setPort: ['%amqp.port%']
+            - setUser: ['%amqp.user%']
+            - setPassword: ['%amqp.password%']
+            - setVhost: ['%amqp.vhost%']
+
+    App\Infrastructure\Domain\AccessTokenService:
         arguments:
-            $host: '%amqp.host%'
-            $port: '%amqp.port%'
-            $user: '%amqp.user%'
-            $password: '%amqp.password%'
-            $vhost: '%amqp.vhost%'
+            $secretKey: '%access_token.secret_key%'
+            $algorithm: '%access_token.algorithm%'
+
+    App\Infrastructure\Domain\RefreshTokenService:
+        arguments:
+            $secretKey: '%refresh_token.secret_key%'
+            $algorithm: '%refresh_token.algorithm%'

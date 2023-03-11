@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\UI\API\Action;
+namespace App\UI\API\ConfirmEmail;
 
 use App\Application\ConfirmEmail\ConfirmEmailCommand;
+use App\UI\API\AbstractAction;
 use Assert\Assert;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

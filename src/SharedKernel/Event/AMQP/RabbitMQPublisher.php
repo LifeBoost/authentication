@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\SharedKernel\Event\AMQP;
 
-use App\SharedKernel\Event\AMQP\Message;
-use App\SharedKernel\Event\AMQP\Publisher;
 use JsonException;
-use PhpAmqpLib\Connection\AMQPConnection;
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 final class RabbitMQPublisher implements Publisher
 {
     public function __construct(
-        private readonly AMQPConnection $connection,
+        private readonly AbstractConnection $connection,
         private readonly AMQPExchange $exchange,
     ){}
 
