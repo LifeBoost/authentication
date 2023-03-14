@@ -25,7 +25,6 @@ final class Version20230303191439 extends AbstractMigration
                 `ip` varchar(255),
                 `user_agent` text,
                 `created_at` datetime default NOW() not null,
-                `updated_at` datetime null,
                 constraint oauth_access_tokens_pk primary key (`access_token`(768)),
                 constraint oauth_access_tokens_users_id_fk foreign key (`users_id`) references users (`id`),
                 constraint oauth_access_tokens_users_id_unique unique (`users_id`)
@@ -41,7 +40,6 @@ final class Version20230303191439 extends AbstractMigration
                 `ip` varchar(255),
                 `user_agent` text,
                 `created_at` datetime default NOW() not null,
-                `updated_at` datetime null,
                 constraint oauth_refresh_tokens_pk primary key (`refresh_token`(768)),
                 constraint oauth_refresh_tokens_users_id_fk foreign key (`users_id`) references users (`id`),
                 constraint oauth_refresh_tokens_users_id_unique unique (`users_id`)

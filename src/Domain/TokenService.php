@@ -9,4 +9,6 @@ use App\Application\GenerateToken\GeneratedToken;
 interface TokenService
 {
     public function generateNew(User $user): GeneratedToken;
+
+    public function generateByRefreshToken(string $refreshToken): GeneratedToken;
 }

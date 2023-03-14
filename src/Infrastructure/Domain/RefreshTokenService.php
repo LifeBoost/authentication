@@ -7,6 +7,7 @@ namespace App\Infrastructure\Domain;
 use App\Domain\User;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 final class RefreshTokenService
 {
@@ -33,5 +34,10 @@ final class RefreshTokenService
         );
 
         return new Token($token, $expiresIn);
+    }
+
+    public function validate(string $token): void
+    {
+        JWT::decode($token, new Key($this->secretKey, $this->algorithm));
     }
 }

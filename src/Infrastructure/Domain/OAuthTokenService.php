@@ -7,6 +7,7 @@ namespace App\Infrastructure\Domain;
 use App\Application\GenerateToken\GeneratedToken;
 use App\Domain\TokenService;
 use App\Domain\User;
+use App\Domain\UserRepository;
 use Doctrine\DBAL\Exception;
 
 final class OAuthTokenService implements TokenService
@@ -14,9 +15,10 @@ final class OAuthTokenService implements TokenService
     private const JWT_TOKEN_TYPE = 'jwt';
 
     public function __construct(
-        public readonly OAuthTokenRepository $repository,
-        public readonly AccessTokenService $accessTokenService,
-        public readonly RefreshTokenService $refreshTokenService,
+        private readonly OAuthTokenRepository $repository,
+        private readonly AccessTokenService $accessTokenService,
+        private readonly RefreshTokenService $refreshTokenService,
+        private readonly UserRepository $userRepository,
     ){}
 
     /**
@@ -38,5 +40,17 @@ final class OAuthTokenService implements TokenService
         $this->repository->store($user->getId(), $generatedToken);
 
         return $generatedToken;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function generateByRefreshToken(string $refreshToken): GeneratedToken
+    {
+        $this->refreshTokenService->validate($refreshToken);
+
+        $user = $this->userRepository->getByRefreshToken($refreshToken);
+
+        return $this->generateNew($user);
     }
 }

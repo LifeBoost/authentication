@@ -24,6 +24,8 @@ final class OAuthTokenRepository
      */
     public function store(UserId $userId, GeneratedToken $generatedToken): void
     {
+        $this->delete($userId);
+
         $this->connection
             ->createQueryBuilder()
             ->insert('oauth_access_tokens')
