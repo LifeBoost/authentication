@@ -9,6 +9,7 @@ use App\Domain\Status;
 use App\Domain\User;
 use App\Domain\UserId;
 use App\Domain\UserRepository;
+use App\Infrastructure\Domain\AccessTokenService;
 use App\SharedKernel\Exception\NotFoundException;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
@@ -16,7 +17,10 @@ use Doctrine\DBAL\Exception;
 
 final class DoctrineUserRepository implements UserRepository
 {
-    public function __construct(private readonly Connection $connection){}
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly AccessTokenService $accessTokenService,
+    ){}
 
     /**
      * @throws Exception
@@ -206,6 +210,51 @@ final class DoctrineUserRepository implements UserRepository
             ->andWhere('ort.expires_at >= NOW()')
             ->setParameters([
                 'refreshToken' => $refreshToken,
+            ])
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (empty($row)) {
+            throw new NotFoundException('User with given credentials not found');
+        }
+
+        return new User(
+            UserId::fromString($row['id']),
+            $row['email'],
+            $row['password'],
+            $row['first_name'],
+            $row['last_name'],
+            Status::from($row['status']),
+            new ConfirmationToken($row['confirmation_token']),
+        );
+    }
+
+    /**
+     * @throws NotFoundException
+     * @throws Exception
+     */
+    public function getByAccessToken(string $accessToken): User
+    {
+        $this->accessTokenService->validate($accessToken);
+
+        $row = $this->connection
+            ->createQueryBuilder()
+            ->select(
+                'u.id',
+                'u.email',
+                'u.password',
+                'u.first_name',
+                'u.last_name',
+                'u.status',
+                'uc.confirmation_token',
+            )
+            ->from('users', 'u')
+            ->join('u', 'oauth_access_tokens', 'oat', 'oat.users_id = u.id')
+            ->join('u', 'users_confirmation', 'uc', 'uc.users_id = u.id')
+            ->where('oat.access_token = :accessToken')
+            ->andWhere('oat.expires_at >= NOW()')
+            ->setParameters([
+                'accessToken' => $accessToken,
             ])
             ->executeQuery()
             ->fetchAssociative();

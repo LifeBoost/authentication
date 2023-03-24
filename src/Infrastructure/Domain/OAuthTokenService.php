@@ -53,4 +53,12 @@ final class OAuthTokenService implements TokenService
 
         return $this->generateNew($user);
     }
+
+    /**
+     * @throws Exception
+     */
+    public function deleteAllTokens(User $user): void
+    {
+        $this->repository->delete($user->getId());
+    }
 }

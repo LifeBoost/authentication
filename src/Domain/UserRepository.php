@@ -22,4 +22,6 @@ interface UserRepository
     public function getByEmail(string $email): User;
 
     public function getByRefreshToken(string $refreshToken): User;
+
+    public function getByAccessToken(string $accessToken): User;
 }

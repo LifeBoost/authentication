@@ -11,4 +11,6 @@ interface TokenService
     public function generateNew(User $user): GeneratedToken;
 
     public function generateByRefreshToken(string $refreshToken): GeneratedToken;
+
+    public function deleteAllTokens(User $user): void;
 }

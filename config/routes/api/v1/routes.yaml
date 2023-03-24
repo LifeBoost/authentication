@@ -12,3 +12,13 @@ authentication.user.generate_token:
   path: /auth/user/token
   controller: App\UI\API\GenerateToken\GenerateAccessTokenAction
   methods: [POST]
+
+authentication.user.invalid_token:
+  path: /auth/user/token
+  controller: App\UI\API\SignOutUser\SignOutUserAction
+  methods: [DELETE]
+
+authentication.user.info:
+  path: /auth/user
+  controller: App\UI\API\GetUser\GetUserAction
+  methods: [GET]
