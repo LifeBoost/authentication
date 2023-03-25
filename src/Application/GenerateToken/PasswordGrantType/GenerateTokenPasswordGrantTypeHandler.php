@@ -6,6 +6,7 @@ namespace App\Application\GenerateToken\PasswordGrantType;
 
 use App\Application\GenerateToken\GeneratedToken;
 use App\Domain\PasswordManager;
+use App\Domain\Status;
 use App\Domain\TokenService;
 use App\Domain\UserRepository;
 use App\SharedKernel\Exception\NotFoundException;
@@ -26,8 +27,12 @@ final class GenerateTokenPasswordGrantTypeHandler implements CommandHandlerInter
     {
         $user = $this->repository->getByEmail($command->email);
 
+        if ($user->getStatus() !== Status::ACTIVE) {
+            throw NotFoundException::notFound();
+        }
+
         if (!$this->passwordManager->isValid($command->password, $user->getPassword())) {
-            throw new NotFoundException('User with given credentials not found');
+            throw NotFoundException::notFound();
         }
 
         return $this->tokenService->generateNew($user);

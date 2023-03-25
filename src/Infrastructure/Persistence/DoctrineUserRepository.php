@@ -172,7 +172,7 @@ final class DoctrineUserRepository implements UserRepository
             ->fetchAssociative();
 
         if (empty($row)) {
-            throw new NotFoundException('User with given credentials not found');
+            throw NotFoundException::notFound();
         }
 
         return new User(

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Infrastructure\Domain;
 
 use App\Domain\User;
+use App\SharedKernel\Exception\NotFoundException;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Throwable;
 
 final class RefreshTokenService
 {
@@ -16,12 +18,13 @@ final class RefreshTokenService
     public function __construct(
         private readonly string $secretKey,
         private readonly string $algorithm,
+        private readonly int $expirationTimeInSeconds,
     ){}
 
     public function generate(User $user): Token
     {
         $expiresIn = (new DateTimeImmutable())
-            ->modify(sprintf('+%d seconds', self::EXPIRATION_TIME_IN_SECONDS))
+            ->modify(sprintf('+%d seconds', $this->expirationTimeInSeconds))
             ->getTimestamp();
 
         $token = JWT::encode(
@@ -38,6 +41,10 @@ final class RefreshTokenService
 
     public function validate(string $token): void
     {
-        JWT::decode($token, new Key($this->secretKey, $this->algorithm));
+        try {
+            JWT::decode($token, new Key($this->secretKey, $this->algorithm));
+        } catch (Throwable) {
+            throw NotFoundException::notFound();
+        }
     }
 }

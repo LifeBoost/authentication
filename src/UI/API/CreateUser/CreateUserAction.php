@@ -28,7 +28,7 @@ final class CreateUserAction extends AbstractAction
         Assert::lazy()
             ->that($data[self::EMAIL] ?? null, self::EMAIL)->notEmpty('Email is required')->email('Given value is not valid email')
             ->that($data[self::PASSWORD] ?? null, self::PASSWORD)->notEmpty('Password is required')->minLength(8, 'Password length must be at least 8 characters')
-            ->that($data[self::FIRST_NAME] ?? null, self::FIRST_NAME)->notEmpty('First name is  required')
+            ->that($data[self::FIRST_NAME] ?? null, self::FIRST_NAME)->notEmpty('First name is required')
             ->that($data[self::LAST_NAME] ?? null, self::LAST_NAME)->notEmpty('Last name is required')
             ->verifyNow();
 

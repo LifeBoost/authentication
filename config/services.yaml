@@ -7,9 +7,11 @@ parameters:
 
     access_token.secret_key: '%env(resolve:JWT_ACCESS_TOKEN_SECRET_KEY)%'
     access_token.algorithm: '%env(resolve:JWT_ACCESS_TOKEN_ALGORITHM)%'
+    access_token.expiration_time_in_seconds: '%env(resolve:JWT_ACCESS_TOKEN_EXPIRATION_TIME_IN_SECONDS)%'
 
     refresh_token.secret_key: '%env(resolve:JWT_REFRESH_TOKEN_SECRET_KEY)%'
     refresh_token.algorithm: '%env(resolve:JWT_REFRESH_TOKEN_ALGORITHM)%'
+    refresh_token.expiration_time_in_seconds: '%env(resolve:JWT_REFRESH_TOKEN_EXPIRATION_TIME_IN_SECONDS)%'
 
 services:
     _defaults:
@@ -66,8 +68,10 @@ services:
         arguments:
             $secretKey: '%access_token.secret_key%'
             $algorithm: '%access_token.algorithm%'
+            $expirationTimeInSeconds: '%access_token.expiration_time_in_seconds%'
 
     App\Infrastructure\Domain\RefreshTokenService:
         arguments:
             $secretKey: '%refresh_token.secret_key%'
             $algorithm: '%refresh_token.algorithm%'
+            $expirationTimeInSeconds: '%refresh_token.expiration_time_in_seconds%'

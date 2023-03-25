@@ -45,7 +45,7 @@ final class Version20230208212305 extends AbstractMigration
                 `updated_at`         datetime               null,
                 constraint users_confirmation_unique_confirmation_token unique (`confirmation_token`),
                 constraint users_confirmation_unique_email unique (`email`),
-                constraint users_confirmation_users_id_fk foreign key (`users_id`) references users (`id`)
+                constraint users_confirmation_users_id_fk foreign key (`users_id`) references users (`id`) ON DELETE CASCADE
             );
         ");
     }

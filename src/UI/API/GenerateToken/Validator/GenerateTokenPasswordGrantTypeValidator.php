@@ -17,7 +17,7 @@ final class GenerateTokenPasswordGrantTypeValidator implements GenerateTokenVali
     {
         Assert::lazy()
             ->that($request[self::GRANT_TYPE] ?? null)->notEmpty('Grant type is required')->eq(GrantType::PASSWORD->value)
-            ->that($request[self::EMAIL] ?? null)->notEmpty('Email is required for this authentication type')->email('Is not valid email')
+            ->that($request[self::EMAIL] ?? null)->notEmpty('Email is required for this authentication type')->email('Given value is not valid email')
             ->that($request[self::PASSWORD] ?? null)->notEmpty('Password is required for this authentication type')
             ->verifyNow();
     }

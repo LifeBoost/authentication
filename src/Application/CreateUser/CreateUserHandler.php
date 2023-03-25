@@ -23,7 +23,7 @@ final class CreateUserHandler implements CommandHandlerInterface
     public function __invoke(CreateUserCommand $command): void
     {
         if ($this->repository->existsByEmail($command->email)) {
-            throw new DomainException('User with given email already exists');
+            throw DomainException::alreadyExists();
         }
 
         $user = User::create(
