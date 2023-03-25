@@ -3,6 +3,11 @@ authentication.user.create:
   controller: App\UI\API\CreateUser\CreateUserAction
   methods: [POST]
 
+authentication.user.get:
+  path: /auth/user
+  controller: App\UI\API\GetUser\GetUserAction
+  methods: [GET]
+
 authentication.user.confirm_email:
   path: /auth/user/confirm/{token}
   controller: App\UI\API\ConfirmEmail\ConfirmEmailAction
@@ -17,8 +22,3 @@ authentication.user.invalid_token:
   path: /auth/user/token
   controller: App\UI\API\SignOutUser\SignOutUserAction
   methods: [DELETE]
-
-authentication.user.info:
-  path: /auth/user
-  controller: App\UI\API\GetUser\GetUserAction
-  methods: [GET]

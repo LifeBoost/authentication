@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\UI\API\SignOutUser;
+namespace App\UI\API\InvalidToken;
 
-use App\Application\SignOutByToken\SignOutByTokenCommand;
+use App\Application\InvalidToken\InvalidTokenCommand;
 use App\UI\API\AbstractAction;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class SignOutUserAction extends AbstractAction
+final class InvalidTokenAction extends AbstractAction
 {
     public function __construct(
         private readonly MessageBusInterface $messageBus,
@@ -18,7 +18,7 @@ final class SignOutUserAction extends AbstractAction
 
     public function __invoke(Request $request): Response
     {
-        $command = new SignOutByTokenCommand($this->getAccessTokenFromRequest($request));
+        $command = new InvalidTokenCommand($this->getAccessTokenFromRequest($request));
 
         $this->messageBus->dispatch($command);
 

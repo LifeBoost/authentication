@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\SignOutByToken;
+namespace App\Application\InvalidToken;
 
-final class SignOutByTokenCommand
+final class InvalidTokenCommand
 {
     public function __construct(
         public readonly string $accessToken,

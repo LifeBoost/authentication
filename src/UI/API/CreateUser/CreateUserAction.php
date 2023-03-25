@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\API\CreateUser;
 
-use App\Application\Register\RegisterUserCommand;
+use App\Application\CreateUser\CreateUserCommand;
 use App\UI\API\AbstractAction;
 use Assert\Assert;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,7 +32,7 @@ final class CreateUserAction extends AbstractAction
             ->that($data[self::LAST_NAME] ?? null, self::LAST_NAME)->notEmpty('Last name is required')
             ->verifyNow();
 
-        $command = new RegisterUserCommand(
+        $command = new CreateUserCommand(
             $data[self::EMAIL],
             $data[self::PASSWORD],
             $data[self::FIRST_NAME],

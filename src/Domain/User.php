@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain;
 
 use App\Domain\Event\EmailConfirmed;
-use App\Domain\Event\UserWasRegister;
+use App\Domain\Event\UserWasCreated;
 use App\Domain\Exception\EmailAlreadyConfirmedException;
 use App\SharedKernel\Entity;
 
@@ -21,7 +21,7 @@ final class User extends Entity
         private ?ConfirmationToken $confirmationToken,
     ){}
 
-    public static function register(
+    public static function create(
         string $email,
         string $password,
         string $firstName,
@@ -39,7 +39,7 @@ final class User extends Entity
         );
 
         $user->publishDomainEvent(
-            new UserWasRegister(
+            new UserWasCreated(
                 $user->getId()->toString(),
                 $user->getEmail(),
                 $user->firstName,

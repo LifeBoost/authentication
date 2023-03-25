@@ -6,7 +6,7 @@ namespace App\Domain\Event;
 
 use App\SharedKernel\Event\DomainEvent;
 
-final class UserWasRegister implements DomainEvent
+final class UserWasCreated implements DomainEvent
 {
     public function __construct(
         public readonly string $id,
