@@ -28,3 +28,9 @@ framework:
         routing:
             App\Domain\Event\UserWasCreated: message_broker_publisher
             App\Domain\Event\EmailConfirmed: message_broker_publisher
+
+when@test:
+    framework:
+        messenger:
+            transports:
+                message_broker_publisher: 'in-memory://'
