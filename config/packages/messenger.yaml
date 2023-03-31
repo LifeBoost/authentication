@@ -16,4 +16,15 @@ framework:
                     - 'App\SharedKernel\Messenger\Middleware\DomainEventDispatcherMiddleware'
 
         transports:
+            message_broker_publisher:
+                dsn: '%env(AMQP_TRANSPORT_DSN)%'
+                serializer: App\SharedKernel\Messenger\JsonMessageSerializer
+                options:
+                    exchange:
+                        name: 'microservices.authentication'
+                        type: direct
+                    queues: []
+
         routing:
+            App\Domain\Event\UserWasCreated: message_broker_publisher
+            App\Domain\Event\EmailConfirmed: message_broker_publisher

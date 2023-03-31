@@ -47,6 +47,13 @@ RUN apk add --no-cache --virtual .build-deps \
         apk del --no-network .build-deps; \
         err="$(php --version 3>&1 1>&2 2>&3)"; 	[ -z "$err" ]
 
+## Install AMQP
+RUN set -eux; \
+  apk add rabbitmq-c-dev; \
+  pecl install amqp-1.11.0; \
+  docker-php-ext-enable amqp; \
+  php -m | grep -oiE '^amqp$'
+
 RUN apk add --no-cache --virtual .build-xdebug linux-headers && pecl install xdebug-${XDEBUG_VERSION}
 
 RUN deluser --remove-home www-data && adduser -u1000 -D www-data && rm -rf /var/www /usr/local/etc/php-fpm.d/* && \

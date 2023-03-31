@@ -15,4 +15,11 @@ final class UserWasCreated implements DomainEvent
         public readonly string $lastName,
         public readonly string $confirmationToken,
     ){}
+
+    public function toArray(): array
+    {
+        return [
+            'userId' => $this->id,
+        ];
+    }
 }

@@ -6,4 +6,5 @@ namespace App\SharedKernel\Event;
 
 interface DomainEvent
 {
+    public function toArray(): array;
 }

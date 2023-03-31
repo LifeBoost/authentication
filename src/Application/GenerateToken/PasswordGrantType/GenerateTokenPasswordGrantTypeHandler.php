@@ -28,11 +28,11 @@ final class GenerateTokenPasswordGrantTypeHandler implements CommandHandlerInter
         $user = $this->repository->getByEmail($command->email);
 
         if ($user->getStatus() !== Status::ACTIVE) {
-            throw NotFoundException::notFound();
+            throw NotFoundException::userNotFound();
         }
 
         if (!$this->passwordManager->isValid($command->password, $user->getPassword())) {
-            throw NotFoundException::notFound();
+            throw NotFoundException::userNotFound();
         }
 
         return $this->tokenService->generateNew($user);

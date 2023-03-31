@@ -8,6 +8,7 @@ use App\Application\GenerateToken\GeneratedToken;
 use App\Domain\TokenService;
 use App\Domain\User;
 use App\Domain\UserRepository;
+use App\SharedKernel\Exception\NotFoundException;
 use Doctrine\DBAL\Exception;
 
 final class OAuthTokenService implements TokenService
@@ -44,6 +45,7 @@ final class OAuthTokenService implements TokenService
 
     /**
      * @throws Exception
+     * @throws NotFoundException
      */
     public function generateByRefreshToken(string $refreshToken): GeneratedToken
     {

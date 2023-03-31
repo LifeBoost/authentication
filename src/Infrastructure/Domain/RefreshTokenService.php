@@ -13,8 +13,6 @@ use Throwable;
 
 final class RefreshTokenService
 {
-    private const EXPIRATION_TIME_IN_SECONDS = 43200; // 12 hours
-
     public function __construct(
         private readonly string $secretKey,
         private readonly string $algorithm,
@@ -39,12 +37,15 @@ final class RefreshTokenService
         return new Token($token, $expiresIn);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function validate(string $token): void
     {
         try {
             JWT::decode($token, new Key($this->secretKey, $this->algorithm));
         } catch (Throwable) {
-            throw NotFoundException::notFound();
+            throw NotFoundException::userNotFound();
         }
     }
 }

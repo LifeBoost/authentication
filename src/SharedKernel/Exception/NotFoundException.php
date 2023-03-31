@@ -10,7 +10,7 @@ final class NotFoundException extends Exception
 {
     public const USER_NOT_FOUND_MESSAGE = 'User with given credentials not found';
 
-    public static function notFound(): self
+    public static function userNotFound(): self
     {
         return new self(self::USER_NOT_FOUND_MESSAGE);
     }

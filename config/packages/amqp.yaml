@@ -1,6 +1,0 @@
-parameters:
-  amqp_clients:
-    publisher:
-      user_was_registered:
-        exchange: 'microservices.authentication'
-        routing_key: 'user_was_registered'

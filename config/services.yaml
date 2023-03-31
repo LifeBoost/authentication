@@ -1,10 +1,4 @@
 parameters:
-    amqp.host: '%env(resolve:AMQP_HOST)%'
-    amqp.port: '%env(resolve:AMQP_PORT)%'
-    amqp.user: '%env(resolve:AMQP_USER)%'
-    amqp.password: '%env(resolve:AMQP_PASSWORD)%'
-    amqp.vhost: '%env(resolve:AMQP_VHOST)%'
-
     access_token.secret_key: '%env(resolve:JWT_ACCESS_TOKEN_SECRET_KEY)%'
     access_token.algorithm: '%env(resolve:JWT_ACCESS_TOKEN_ALGORITHM)%'
     access_token.expiration_time_in_seconds: '%env(resolve:JWT_ACCESS_TOKEN_EXPIRATION_TIME_IN_SECONDS)%'
@@ -36,33 +30,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-    amqp_factory:
-        class: App\SharedKernel\Event\AMQP\RabbitMQFactory
-        arguments:
-            $configurations: '%amqp_clients%'
-            $connection: '@amqp_connection'
-
-    PhpAmqpLib\Connection\AMQPConnectionFactory: ~
-
-    amqp_connection:
-        class: PhpAmqpLib\Connection\AbstractConnection
-        factory: ['@PhpAmqpLib\Connection\AMQPConnectionFactory', 'create']
-        arguments: ['@PhpAmqpLib\Connection\AMQPConnectionConfig']
-
-    App\Infrastructure\Event\Handler\UserWasRegisteredEventHandler:
-        arguments:
-            $publisher: '@=service("amqp_factory").getPublisher("user_was_registered")'
-
-    PhpAmqpLib\Connection\AMQPConnectionConfig:
-        calls:
-            - setIsLazy: [true]
-            - setIoType: ['socket']
-            - setHost: ['%amqp.host%']
-            - setPort: ['%amqp.port%']
-            - setUser: ['%amqp.user%']
-            - setPassword: ['%amqp.password%']
-            - setVhost: ['%amqp.vhost%']
 
     App\Infrastructure\Domain\AccessTokenService:
         arguments:

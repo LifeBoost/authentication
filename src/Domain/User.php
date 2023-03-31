@@ -64,6 +64,7 @@ final class User extends Entity
 
         $this->publishDomainEvent(
             new EmailConfirmed(
+                $this->id->toString(),
                 $this->email,
                 $this->firstName,
                 $this->lastName,

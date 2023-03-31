@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Infrastructure\Domain;
 
 use App\Domain\User;
+use App\SharedKernel\Exception\NotFoundException;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Throwable;
 
 final class AccessTokenService
 {
@@ -35,8 +37,15 @@ final class AccessTokenService
         return new Token($token, $expiresIn);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function validate(string $token): void
     {
-        JWT::decode($token, new Key($this->secretKey, $this->algorithm));
+        try {
+            JWT::decode($token, new Key($this->secretKey, $this->algorithm));
+        } catch (Throwable) {
+            throw NotFoundException::userNotFound();
+        }
     }
 }
