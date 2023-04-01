@@ -36,24 +36,17 @@ abstract class BaseTestCase extends WebTestCase
         parent::tearDown();
     }
 
-    protected static function getHeaders(): array
-    {
-        return [
-            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', self::TEST_JWT_TOKEN),
-        ];
-    }
-
     protected static function createHttpClient(): KernelBrowser
     {
         self::ensureKernelShutdown();
 
-        return self::createClient([], self::getHeaders());
+        return self::createClient();
     }
 
-    public function get(string $url, array $query = []): Response
+    public function get(string $url, array $query = [], array $server = []): Response
     {
         $client = self::createHttpClient();
-        $client->request(Request::METHOD_GET, $url, $query);
+        $client->request(Request::METHOD_GET, $url, $query, [], $server);
 
         return $client->getResponse();
     }

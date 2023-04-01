@@ -84,6 +84,22 @@ final class UserMother
     }
 
     /**
+     * @throws JsonException
+     */
+    public function generateTokenGrantTypeRefreshToken(
+        string $refreshToken,
+    ): array {
+        $this->client->restart();
+
+        $this->client->jsonRequest(Request::METHOD_POST, self::TOKEN_URL_PATTERN, [
+            'grantType' => 'refreshToken',
+            'refreshToken' => $refreshToken,
+        ]);
+
+        return json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
      * @throws Exception
      */
     public function deleteUser(string $email = 'test@gmail.com'): void
