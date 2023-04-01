@@ -20,5 +20,5 @@ authentication.user.generate_token:
 
 authentication.user.invalid_token:
   path: /auth/user/token
-  controller: App\UI\API\SignOutUser\SignOutUserAction
+  controller: App\UI\API\InvalidToken\InvalidTokenAction
   methods: [DELETE]

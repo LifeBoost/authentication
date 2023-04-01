@@ -67,10 +67,10 @@ abstract class BaseTestCase extends WebTestCase
         return $client->getResponse();
     }
 
-    public function delete(string $url): Response
+    public function delete(string $url, array $server = []): Response
     {
         $client = self::createHttpClient();
-        $client->request(Request::METHOD_DELETE, $url);
+        $client->request(Request::METHOD_DELETE, $url, server: $server);
 
         return $client->getResponse();
     }

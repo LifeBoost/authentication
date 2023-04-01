@@ -122,6 +122,26 @@ final class GetUserTest extends BaseTestCase
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
+    /**
+     * @test
+     *
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function shouldReturnValidationErrorWithoutAuthorizationHeader(): void
+    {
+        $this->userMother->create();
+        $this->userMother->confirmEmail();
+        $this->userMother->generateTokenGrantTypePassword();
+
+        $response = $this->get(UserMother::URL_PATTERN);
+        $responseData = $this->parseJson($response->getContent());
+
+        self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        self::assertArrayHasKey('errors', $responseData);
+        self::assertEquals('Authorization header is required', $responseData['errors'][0]['message']);
+    }
+
     private function getServer(string $accessToken): array
     {
         return [
