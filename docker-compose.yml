@@ -11,6 +11,8 @@ services:
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - lb-authentication
     volumes:
       - ${APP_BASE_DIR-.}:/app
 
@@ -27,6 +29,15 @@ services:
       PHP_FPM_HOST: app
     volumes:
       - ${APP_BASE_DIR-.}/public:/app/public
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: lb-local
+      traefik.http.routers.authentication-api.tls: "true"
+      traefik.http.routers.authentication-api.rule: HostRegexp(`authentication.local.lb`)
+      traefik.http.services.authentication-api.loadbalancer.server.port: 8080
+    networks:
+      - lb-local
+      - lb-authentication
     depends_on:
       - app
 
@@ -39,6 +50,8 @@ services:
     restart: always
     ports:
       - "3337:3306"
+    networks:
+      - lb-authentication
     healthcheck:
       test: [ "CMD-SHELL", "mysql -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD -e \"SELECT 1\" $$MYSQL_DATABASE &> /dev/null" ]
       interval: 30s
@@ -47,6 +60,12 @@ services:
 
   mb:
     image: rabbitmq:management-alpine
+    networks:
+      - lb-authentication
     ports:
       - "15672:15672"
 
+networks:
+  lb-authentication: ~
+  lb-local:
+    external: true
