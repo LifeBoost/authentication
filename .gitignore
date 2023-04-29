@@ -20,6 +20,4 @@
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###> local docker-compose ###
 docker-compose.yml
-###< local docker-compose ###
