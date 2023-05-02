@@ -13,6 +13,7 @@ use App\UI\API\GenerateToken\Validator\GenerateTokenPasswordGrantTypeValidator;
 use App\UI\API\GenerateToken\Validator\GenerateTokenRefreshGrantTypeValidator;
 use App\UI\API\GenerateToken\Validator\GenerateTokenValidator;
 use App\UI\API\InvalidRequestException;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,10 +39,10 @@ final class GenerateAccessTokenAction extends AbstractAction
      */
     public function __invoke(Request $request): Response
     {
-        $data = $request->toArray();
+        $data = array_merge($request->toArray(), $request->cookies->all());
         $grantType = GrantType::tryFrom($data[self::GRANT_TYPE]);
 
-        $this->getValidator($grantType)->validateRequest($data);
+        $this->getValidator($grantType)->validateRequest(array_merge($data, $request->cookies->all()));
         $command = $this->getCommandBuilder($grantType)->build($data);
 
         /** @var GeneratedToken $token */
@@ -50,13 +51,21 @@ final class GenerateAccessTokenAction extends AbstractAction
             ->last(HandledStamp::class)
             ?->getResult();
 
-        return new JsonResponse([
+        $response = new JsonResponse([
             'accessToken' => $token->accessToken,
             'refreshToken' => $token->refreshToken,
             'expiresIn' => $token->expiresIn,
             'refreshExpiresIn' => $token->refreshExpiresIn,
             'tokenType' => $token->tokenType,
         ]);
+
+        $response->headers->setCookie(
+            Cookie::create('refreshToken')
+                ->withValue($token->refreshToken)
+                ->withExpires($token->refreshExpiresIn)
+        );
+
+        return $response;
     }
 
     /**

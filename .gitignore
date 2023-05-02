@@ -21,3 +21,4 @@
 ###< phpunit/phpunit ###
 
 docker-compose.yml
+tools/http-client/http-client.private.env.json
