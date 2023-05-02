@@ -9,6 +9,7 @@ use App\Tests\Integration\BaseTestCase;
 use App\Tests\Integration\Mother\UserMother;
 use Doctrine\DBAL\Exception;
 use JsonException;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 final class GenerateTokenRefreshTokenGrantTypeTest extends BaseTestCase
@@ -26,8 +27,7 @@ final class GenerateTokenRefreshTokenGrantTypeTest extends BaseTestCase
 
         $response = $this->post(UserMother::TOKEN_URL_PATTERN, [
             'grantType' => 'refreshToken',
-            'refreshToken' =>  $refreshToken,
-        ]);
+        ], [new Cookie('refreshToken', $refreshToken)]);
 
         $responseData = $this->parseJson($response->getContent());
 
@@ -47,8 +47,7 @@ final class GenerateTokenRefreshTokenGrantTypeTest extends BaseTestCase
     {
         $response = $this->post(UserMother::TOKEN_URL_PATTERN, [
             'grantType' => 'refreshToken',
-            'refreshToken' => 'testingInvalidToken',
-        ]);
+        ], [new Cookie('refreshToken', 'InvalidTokenJWT')]);
 
         $responseData = $this->parseJson($response->getContent());
 
@@ -93,8 +92,7 @@ final class GenerateTokenRefreshTokenGrantTypeTest extends BaseTestCase
 
         $response = $this->post(UserMother::TOKEN_URL_PATTERN, [
             'grantType' => 'refreshToken',
-            'refreshToken' => $refreshToken,
-        ]);
+        ], [new Cookie('refreshToken', $refreshToken)]);
 
         $responseData = $this->parseJson($response->getContent());
 
@@ -117,8 +115,7 @@ final class GenerateTokenRefreshTokenGrantTypeTest extends BaseTestCase
 
         $response = $this->post(UserMother::TOKEN_URL_PATTERN, [
             'grantType' => 'refreshToken',
-            'refreshToken' => $refreshToken,
-        ]);
+        ], [new Cookie('refreshToken', $refreshToken)]);
 
         $responseData = $this->parseJson($response->getContent());
 

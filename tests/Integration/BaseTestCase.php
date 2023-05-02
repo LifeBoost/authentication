@@ -51,9 +51,14 @@ abstract class BaseTestCase extends WebTestCase
         return $client->getResponse();
     }
 
-    public function post(string $url, array $body = []): Response
+    public function post(string $url, array $body = [], array $cookies = []): Response
     {
         $client = self::createHttpClient();
+
+        foreach ($cookies as $cookie) {
+            $client->getCookieJar()->set($cookie);
+        }
+
         $client->jsonRequest(Request::METHOD_POST, $url, $body);
 
         return $client->getResponse();

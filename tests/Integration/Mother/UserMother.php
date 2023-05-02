@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use JsonException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 
 final class UserMother
@@ -90,9 +91,12 @@ final class UserMother
     {
         $this->client->restart();
 
+        $this->client->getCookieJar()->set(
+            new Cookie('refreshToken', $refreshToken)
+        );
+
         $this->client->jsonRequest(Request::METHOD_POST, self::TOKEN_URL_PATTERN, [
             'grantType' => 'refreshToken',
-            'refreshToken' => $refreshToken,
         ]);
 
         return json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);

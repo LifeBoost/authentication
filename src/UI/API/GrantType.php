@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UI\API\GenerateToken;
+namespace App\UI\API;
 
 enum GrantType: string
 {
