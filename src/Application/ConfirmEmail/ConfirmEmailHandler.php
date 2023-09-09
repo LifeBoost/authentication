@@ -12,7 +12,9 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 
 final class ConfirmEmailHandler implements CommandHandlerInterface
 {
-    public function __construct(private readonly UserRepository $repository){}
+    public function __construct(private readonly UserRepository $repository)
+    {
+    }
 
     /**
      * @throws NotFoundException

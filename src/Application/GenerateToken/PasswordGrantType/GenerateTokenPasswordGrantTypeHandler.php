@@ -18,7 +18,8 @@ final class GenerateTokenPasswordGrantTypeHandler implements CommandHandlerInter
         private readonly UserRepository  $repository,
         private readonly PasswordManager $passwordManager,
         private readonly TokenService    $tokenService,
-    ){}
+    ) {
+    }
 
     /**
      * @throws NotFoundException

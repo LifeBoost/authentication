@@ -16,7 +16,8 @@ final class GetUserAction extends AbstractAction
 {
     public function __construct(
         private readonly MessageBusInterface $queryBus,
-    ){}
+    ) {
+    }
 
     public function __invoke(Request $request): Response
     {

@@ -12,7 +12,8 @@ final class GenerateTokenRefreshTokenGrantTypeHandler implements CommandHandlerI
 {
     public function __construct(
         private readonly TokenService $tokenService,
-    ){}
+    ) {
+    }
 
     public function __invoke(GenerateTokenRefreshTokenGrantTypeCommand $command): GeneratedToken
     {

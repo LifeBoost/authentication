@@ -8,5 +8,6 @@ final class GetUserQuery
 {
     public function __construct(
         public readonly string $accessToken,
-    ){}
+    ) {
+    }
 }

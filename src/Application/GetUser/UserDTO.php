@@ -11,5 +11,6 @@ final class UserDTO
         public readonly string $email,
         public readonly string $firstName,
         public readonly string $lastName,
-    ){}
+    ) {
+    }
 }

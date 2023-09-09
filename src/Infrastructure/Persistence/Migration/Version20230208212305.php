@@ -35,7 +35,7 @@ final class Version20230208212305 extends AbstractMigration
             );
         ");
 
-        $this->addSql("
+        $this->addSql('
             create table users_confirmation
             (
                 `users_id`           varchar(36)            not null,
@@ -47,12 +47,12 @@ final class Version20230208212305 extends AbstractMigration
                 constraint users_confirmation_unique_email unique (`email`),
                 constraint users_confirmation_users_id_fk foreign key (`users_id`) references users (`id`) ON DELETE CASCADE
             );
-        ");
+        ');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql("DROP TABLE IF EXISTS `users`");
-        $this->addSql("DROP TABLE IF EXISTS `users_confirmation`");
+        $this->addSql('DROP TABLE IF EXISTS `users`');
+        $this->addSql('DROP TABLE IF EXISTS `users_confirmation`');
     }
 }

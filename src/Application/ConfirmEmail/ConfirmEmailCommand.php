@@ -6,5 +6,7 @@ namespace App\Application\ConfirmEmail;
 
 final class ConfirmEmailCommand
 {
-    public function __construct(public readonly string $confirmationToken){}
+    public function __construct(public readonly string $confirmationToken)
+    {
+    }
 }

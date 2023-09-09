@@ -10,5 +10,6 @@ final class GenerateTokenRefreshTokenGrantTypeCommand implements GenerateTokenCo
 {
     public function __construct(
         public readonly string $refreshToken,
-    ){}
+    ) {
+    }
 }

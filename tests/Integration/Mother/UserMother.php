@@ -19,7 +19,8 @@ final class UserMother
 
     public function __construct(
         private readonly KernelBrowser $client,
-    ){}
+    ) {
+    }
 
     /**
      * @throws JsonException

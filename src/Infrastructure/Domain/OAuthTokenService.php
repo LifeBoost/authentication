@@ -20,7 +20,8 @@ final class OAuthTokenService implements TokenService
         private readonly AccessTokenService $accessTokenService,
         private readonly RefreshTokenService $refreshTokenService,
         private readonly UserRepository $userRepository,
-    ){}
+    ) {
+    }
 
     /**
      * @throws Exception

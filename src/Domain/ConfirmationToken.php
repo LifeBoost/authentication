@@ -8,7 +8,9 @@ use Ramsey\Uuid\Uuid;
 
 final class ConfirmationToken
 {
-    public function __construct(public readonly string $token){}
+    public function __construct(public readonly string $token)
+    {
+    }
 
     public static function generate(): self
     {

@@ -16,7 +16,7 @@ final class Version20230303191439 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("
+        $this->addSql('
             create table `oauth_access_tokens`
             (
                 `users_id` varchar(36) not null,
@@ -29,9 +29,9 @@ final class Version20230303191439 extends AbstractMigration
                 constraint oauth_access_tokens_users_id_fk foreign key (`users_id`) references users (`id`) ON DELETE CASCADE,
                 constraint oauth_access_tokens_users_id_unique unique (`users_id`)
             );
-        ");
+        ');
 
-        $this->addSql("
+        $this->addSql('
             create table `oauth_refresh_tokens`
             (
                 `users_id` varchar(36) not null,
@@ -44,12 +44,12 @@ final class Version20230303191439 extends AbstractMigration
                 constraint oauth_refresh_tokens_users_id_fk foreign key (`users_id`) references users (`id`) ON DELETE CASCADE,
                 constraint oauth_refresh_tokens_users_id_unique unique (`users_id`)
             );
-        ");
+        ');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql("DROP TABLE IF EXISTS `oauth_refresh_tokens`");
-        $this->addSql("DROP TABLE IF EXISTS `oauth_access_tokens`");
+        $this->addSql('DROP TABLE IF EXISTS `oauth_refresh_tokens`');
+        $this->addSql('DROP TABLE IF EXISTS `oauth_access_tokens`');
     }
 }

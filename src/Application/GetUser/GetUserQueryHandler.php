@@ -11,7 +11,8 @@ final class GetUserQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly UserRepository $repository,
-    ){}
+    ) {
+    }
 
     public function __invoke(GetUserQuery $query): UserDTO
     {

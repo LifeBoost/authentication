@@ -91,7 +91,5 @@ final class ErrorHandlerMiddleware implements EventSubscriberInterface
 
             return;
         }
-
-
     }
 }

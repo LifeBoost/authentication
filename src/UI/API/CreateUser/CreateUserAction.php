@@ -19,7 +19,9 @@ final class CreateUserAction extends AbstractAction
     private const FIRST_NAME = 'firstName';
     private const LAST_NAME = 'lastName';
 
-    public function __construct(private readonly MessageBusInterface $commandBus){}
+    public function __construct(private readonly MessageBusInterface $commandBus)
+    {
+    }
 
     public function __invoke(Request $request): Response
     {

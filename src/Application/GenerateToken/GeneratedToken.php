@@ -12,5 +12,6 @@ final class GeneratedToken
         public readonly int $expiresIn,
         public readonly int $refreshExpiresIn,
         public readonly string $tokenType,
-    ){}
+    ) {
+    }
 }

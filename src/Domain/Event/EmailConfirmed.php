@@ -13,7 +13,8 @@ final class EmailConfirmed implements DomainEvent
         public readonly string $email,
         public readonly string $firstName,
         public readonly string $lastName,
-    ){}
+    ) {
+    }
 
     public function toArray(): array
     {
