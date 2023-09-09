@@ -23,3 +23,4 @@
 docker-compose.yml
 tools/http-client/http-client.private.env.json
 /cache/
+/.phpunit.cache/
