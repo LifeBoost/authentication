@@ -1,0 +1,129 @@
+name: Main actions
+
+on:
+  push:
+    branches-ignore:
+      - master
+    tags-ignore:
+      - '**'
+
+env:
+  artifactName: ${{ github.sha }}.tar.gz
+
+jobs:
+  build:
+    name: Build
+    runs-on: self-hosted
+    container:
+      image: ghcr.io/lifeboost/php-development:8.2
+      volumes:
+        - ./:/app
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build project
+        run: |
+          composer install
+          mkdir -p /tmp/artifacts
+          tar czf /tmp/artifacts/$artifactName /app
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+          retention-days: 1
+  phpstan:
+    name: PHPStan
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: ghcr.io/lifeboost/php-development:8.2
+      volumes:
+        - ./:/app
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+      - name: Unpack artifact
+        run: |
+          tar -xf /tmp/artifacts/$artifactName -C /app
+      - name: Run phpstan
+        run: composer phpstan:check
+  csfixer:
+    name: CSFixer
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: ghcr.io/lifeboost/php-development:8.2
+      volumes:
+        - ./:/app
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+      - name: Unpack artifact
+        run: |
+          tar -xf /tmp/artifacts/$artifactName -C /app
+      - name: Run csfixer
+        run: composer cs:check
+  database-schema-validation:
+    name: Database Schema Validation
+    runs-on: self-hosted
+    needs: build
+    container:
+      image: ghcr.io/lifeboost/php-development:8.2
+      volumes:
+        - ./:/app
+    services:
+      db:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: auth
+          MYSQL_ROOT_PASSWORD: auth
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mb:
+        image: rabbitmq:management-alpine
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+      - name: Unpack artifact
+        run: |
+          tar -xf /tmp/artifacts/$artifactName -C /app
+      - name: Run migrations
+        run: php bin/console doctrine:migrations:migrate -n
+      - name: Run schema validation
+        run: php bin/console doctrine:schema:validate
+  integration-tests:
+    name: Integration tests
+    runs-on: self-hosted
+    needs: [build, phpstan, csfixer, database-schema-validation]
+    container:
+      image: ghcr.io/lifeboost/php-development:8.2
+      volumes:
+        - ./:/app
+    services:
+      db:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: auth
+          MYSQL_ROOT_PASSWORD: auth
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mb:
+        image: rabbitmq:management-alpine
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: project-artifact
+          path: /tmp/artifacts
+      - name: Unpack artifact
+        run: |
+          tar -xf /tmp/artifacts/$artifactName -C /app
+      - name: Run integration tests
+        run: composer phpunit:integration
