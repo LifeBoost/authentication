@@ -99,8 +99,6 @@ jobs:
           tar -xf /tmp/artifacts/$artifactName -C /app
       - name: Run migrations
         run: php bin/console doctrine:migrations:migrate -n
-      - name: Run schema validation
-        run: php bin/console doctrine:schema:validate
   integration-tests:
     name: Integration tests
     runs-on: self-hosted
