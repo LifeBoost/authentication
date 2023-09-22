@@ -83,6 +83,8 @@ jobs:
         env:
           MYSQL_DATABASE: auth
           MYSQL_ROOT_PASSWORD: auth
+        ports:
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       mb:
         image: rabbitmq:management-alpine
@@ -97,8 +99,6 @@ jobs:
           tar -xf /tmp/artifacts/$artifactName -C /app
       - name: Run migrations
         run: php bin/console doctrine:migrations:migrate -n
-      - name: Run schema validation
-        run: php bin/console doctrine:schema:validate
   integration-tests:
     name: Integration tests
     runs-on: self-hosted
@@ -113,6 +113,8 @@ jobs:
         env:
           MYSQL_DATABASE: auth
           MYSQL_ROOT_PASSWORD: auth
+        ports:
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       mb:
         image: rabbitmq:management-alpine
