@@ -19,8 +19,7 @@ final class User extends Entity
         private string $lastName,
         private Status $status,
         private ?ConfirmationToken $confirmationToken,
-    ) {
-    }
+    ) {}
 
     public static function create(
         string $email,

@@ -8,6 +8,5 @@ final class InvalidTokenCommand
 {
     public function __construct(
         public readonly string $accessToken,
-    ) {
-    }
+    ) {}
 }

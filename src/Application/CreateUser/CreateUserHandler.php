@@ -15,8 +15,7 @@ final class CreateUserHandler implements CommandHandlerInterface
     public function __construct(
         private readonly UserRepository $repository,
         private readonly PasswordManager $passwordManager,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws DomainException

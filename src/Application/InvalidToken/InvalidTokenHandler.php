@@ -14,8 +14,7 @@ final class InvalidTokenHandler implements CommandHandlerInterface
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly TokenService $tokenService,
-    ) {
-    }
+    ) {}
 
     public function __invoke(InvalidTokenCommand $command): void
     {

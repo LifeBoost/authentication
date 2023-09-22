@@ -19,4 +19,3 @@ coverage/
 coverage.xml
 images/
 node_modules/
-/docker-compose.yml

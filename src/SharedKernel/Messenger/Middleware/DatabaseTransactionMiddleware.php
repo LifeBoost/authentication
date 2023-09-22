@@ -15,9 +15,7 @@ use Throwable;
 
 final class DatabaseTransactionMiddleware implements MiddlewareInterface
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
+    public function __construct(private readonly Connection $connection) {}
 
     /**
      * @throws Throwable

@@ -14,9 +14,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class ConfirmEmailAction extends AbstractAction
 {
-    public function __construct(private readonly MessageBusInterface $commandBus)
-    {
-    }
+    public function __construct(private readonly MessageBusInterface $commandBus) {}
 
     public function __invoke(string $token, Request $request): Response
     {

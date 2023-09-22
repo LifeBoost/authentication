@@ -20,8 +20,7 @@ final class DoctrineUserRepository implements UserRepository
     public function __construct(
         private readonly Connection $connection,
         private readonly AccessTokenService $accessTokenService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception
@@ -99,7 +98,7 @@ final class DoctrineUserRepository implements UserRepository
             ->from('users')
             ->where('email = :email')
             ->setParameters([
-                'email' => $email
+                'email' => $email,
             ])
             ->executeQuery()
             ->rowCount() > 0;

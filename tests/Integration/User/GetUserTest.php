@@ -69,7 +69,6 @@ final class GetUserTest extends BaseTestCase
         self::assertEquals('Last', $responseData['lastName']);
     }
 
-
     /**
      * @test
      *

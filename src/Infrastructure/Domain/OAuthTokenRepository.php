@@ -17,8 +17,7 @@ final class OAuthTokenRepository
     public function __construct(
         private readonly Connection $connection,
         private readonly UserInformationCollector $userInformationCollector,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws Exception

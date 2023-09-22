@@ -14,8 +14,7 @@ final class UserWasCreated implements DomainEvent
         public readonly string $firstName,
         public readonly string $lastName,
         public readonly string $confirmationToken,
-    ) {
-    }
+    ) {}
 
     public function toArray(): array
     {

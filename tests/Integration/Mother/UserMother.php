@@ -19,8 +19,7 @@ final class UserMother
 
     public function __construct(
         private readonly KernelBrowser $client,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws JsonException
@@ -113,7 +112,9 @@ final class UserMother
         $this->client->jsonRequest(
             Request::METHOD_GET,
             self::URL_PATTERN,
-            server: ['HTTP_AUTHORIZATION' => sprintf('Bearer %s', $accessToken)]
+            server: [
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $accessToken),
+            ]
         );
 
         return json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);

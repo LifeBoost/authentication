@@ -9,6 +9,5 @@ final class Token
     public function __construct(
         public readonly string $token,
         public readonly int $expiresIn,
-    ) {
-    }
+    ) {}
 }

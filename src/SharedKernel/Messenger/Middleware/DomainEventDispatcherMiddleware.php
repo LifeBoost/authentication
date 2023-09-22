@@ -20,9 +20,7 @@ final class DomainEventDispatcherMiddleware implements MiddlewareInterface
         EmailConfirmed::class => 'user_email_was_confirmed',
     ];
 
-    public function __construct(private readonly MessageBusInterface $eventBus)
-    {
-    }
+    public function __construct(private readonly MessageBusInterface $eventBus) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

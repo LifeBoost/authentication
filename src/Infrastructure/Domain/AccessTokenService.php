@@ -17,8 +17,7 @@ final class AccessTokenService
         private readonly string $secretKey,
         private readonly string $algorithm,
         private readonly int $expirationTimeInSeconds,
-    ) {
-    }
+    ) {}
 
     public function generate(User $user): Token
     {

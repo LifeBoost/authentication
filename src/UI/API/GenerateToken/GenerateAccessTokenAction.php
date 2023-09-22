@@ -27,8 +27,7 @@ final class GenerateAccessTokenAction extends AbstractAction
 
     public function __construct(
         private readonly MessageBusInterface $commandBus,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws InvalidRequestException

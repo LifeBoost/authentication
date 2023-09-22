@@ -15,11 +15,10 @@ use App\SharedKernel\Messenger\CommandHandlerInterface;
 final class GenerateTokenPasswordGrantTypeHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly UserRepository  $repository,
+        private readonly UserRepository $repository,
         private readonly PasswordManager $passwordManager,
-        private readonly TokenService    $tokenService,
-    ) {
-    }
+        private readonly TokenService $tokenService,
+    ) {}
 
     /**
      * @throws NotFoundException

@@ -11,8 +11,7 @@ final class SymfonyUserInformationCollector implements UserInformationCollector
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-    ) {
-    }
+    ) {}
 
     public function getIp(): ?string
     {
